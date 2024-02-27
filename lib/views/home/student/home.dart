@@ -1,12 +1,14 @@
+import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/views/home/profile.dart';
-import 'package:e_med/views/home/student/result_page.dart';
 import 'package:e_med/views/home/student/schedule_list.dart';
 import 'package:fancy_bottom_navigation_2/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final int page;
+  const HomePage(this.page, {super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -15,11 +17,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey bottomNavigationKey = GlobalKey();
-  int currentPage = 0;
+  DatabaseService databaseService = Get.put(DatabaseService());
+
+  late int currentPage;
+
+  @override
+  void initState() {
+    super.initState();
+    currentPage = widget.page;
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
@@ -42,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             ),
             TabData(iconData: Icons.person, title: "Profile")
           ],
-          initialSelection: 0,
+          initialSelection: currentPage,
           key: bottomNavigationKey,
           onTabChangedListener: (position) {
             setState(() {

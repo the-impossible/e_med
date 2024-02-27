@@ -10,6 +10,7 @@ class UserData {
   final String? department;
   final String? session;
   final String? college;
+  final String? token;
   final bool isCompleted;
   final DateTime? dateCreated;
 
@@ -23,6 +24,7 @@ class UserData {
     this.department,
     this.session,
     this.college,
+    this.token,
     required this.isCompleted,
     required this.dateCreated,
   });
@@ -38,6 +40,7 @@ class UserData {
       department: snapshot['department'],
       session: snapshot['session'],
       college: snapshot['college'],
+      token: snapshot['token'],
       isCompleted: snapshot['isCompleted'],
       dateCreated: snapshot['dateCreated'] != null
           ? (snapshot['dateCreated'] as Timestamp).toDate()

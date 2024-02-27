@@ -11,8 +11,7 @@ class ErrorScreen extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-                top: 50.0, bottom: 30),
+            padding: const EdgeInsets.only(top: 50.0, bottom: 30),
             child: SvgPicture.asset(
               'assets/error.svg',
               width: 50,

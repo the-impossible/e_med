@@ -1,3 +1,4 @@
+import 'package:e_med/components/delegatedSnackBar.dart';
 import 'package:e_med/components/error.dart';
 import 'package:e_med/models/user_data.dart';
 import 'package:e_med/services/database.dart';
@@ -44,7 +45,18 @@ class _WrapperState extends State<Wrapper> {
                 return const ErrorScreen();
               } else {
                 if (userData.data!.type == 'std') {
-                  return const HomePage();
+                  if (userData.data!.age!.isNotEmpty &&
+                      userData.data!.name.isNotEmpty &&
+                      userData.data!.gender != null) {
+                    return const HomePage(0);
+                  } else {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      ScaffoldMessenger.of(Get.context!).showSnackBar(
+                          delegatedSnackBar(
+                              "Update your profile first", false));
+                    });
+                    return const HomePage(1);
+                  }
                 }
                 return const AdminHomePage();
               }

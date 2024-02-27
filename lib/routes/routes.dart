@@ -27,7 +27,7 @@ final getPages = [
   ),
   GetPage(
     name: Routes.studHome,
-    page: () => const HomePage(),
+    page: () => const HomePage(0),
   ),
   // GetPage(
   //   name: Routes.castVote,

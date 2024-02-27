@@ -1,14 +1,21 @@
 class FormValidator {
-  static String? validateRegNo(String? value) {
+  static String? validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Valid RegNo is Required!';
+      return 'Full name is Required!';
     }
     return null;
   }
 
-    static String? validatePosition(String? value) {
+    static String? validateAge(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Position is Required!';
+      return 'Age is Required!';
+    }
+    return null;
+  }
+
+  static String? validateGender(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Gender is Required!';
     }
     return null;
   }

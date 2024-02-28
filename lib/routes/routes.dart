@@ -1,6 +1,7 @@
 import 'package:e_med/splashScreen.dart';
 import 'package:e_med/views/home/admin/admin_home.dart';
 import 'package:e_med/views/home/student/home.dart';
+import 'package:e_med/views/home/student/reset_password.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -41,10 +42,10 @@ final getPages = [
   //   name: Routes.profilePage,
   //   page: () => const ProfilePage(),
   // ),
-  // GetPage(
-  //   name: Routes.resetPassword,
-  //   page: () => const ResetPassword(),
-  // ),
+  GetPage(
+    name: Routes.resetPassword,
+    page: () => const ResetPassword(),
+  ),
   GetPage(
     name: Routes.adminHome,
     page: () => const AdminHomePage(),

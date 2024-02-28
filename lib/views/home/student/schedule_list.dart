@@ -54,7 +54,7 @@ class _ScheduleListState extends State<ScheduleList> {
                   ),
                 ),
                 Container(
-                  height: size.height * 0.2,
+                  height: size.height * 0.255,
                   decoration: const BoxDecoration(
                     color: Constants.whiteColor,
                     borderRadius: BorderRadius.only(
@@ -73,6 +73,7 @@ class _ScheduleListState extends State<ScheduleList> {
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,6 +108,18 @@ class _ScheduleListState extends State<ScheduleList> {
                           truncate: false,
                           fontName: "InterMed",
                         ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: 100,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Constants.primaryColor,
+                            ),
+                            child: DelegatedText(text: "Result", fontSize: 15),
+                          ),
+                        )
                       ],
                     ),
                   ),

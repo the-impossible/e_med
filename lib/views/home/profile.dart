@@ -6,6 +6,7 @@ import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/components/error.dart';
 import 'package:e_med/controller/profileController.dart';
 import 'package:e_med/models/user_data.dart';
+import 'package:e_med/routes/routes.dart';
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/utils/form_validators.dart';
@@ -244,7 +245,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         color: Constants.darkColor,
                                       ),
                                       TextButton(
-                                        onPressed: () => {},
+                                        onPressed: () =>
+                                            Get.toNamed(Routes.resetPassword),
                                         child: DelegatedText(
                                           text: "Reset?",
                                           fontSize: 15,

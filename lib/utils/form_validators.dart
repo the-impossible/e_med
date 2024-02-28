@@ -20,6 +20,13 @@ class FormValidator {
     return null;
   }
 
+  static String? validateField(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Field is Required!';
+    }
+    return null;
+  }
+
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is Required!';

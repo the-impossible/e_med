@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_med/models/user_data.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class DatabaseService extends GetxController {
@@ -59,7 +60,6 @@ class DatabaseService extends GetxController {
       return Stream.value(null);
     }
   }
-
     // Get a user profile
   Stream<UserData?> getUserProfile(String uid) {
     return usersCollection.doc(uid).snapshots().map((snapshot) {
@@ -70,7 +70,61 @@ class DatabaseService extends GetxController {
     });
   }
 
+  // Set Image
+  Future<bool> setImage(String? uid) async {
+    final ByteData byteData = await rootBundle.load("assets/user.png");
+    final Uint8List imageData = byteData.buffer.asUint8List();
+    filesCollection.child("$uid").putData(imageData);
+    return true;
+  }
+  //Create user
+  Future createStudentData(String uid,
+    String username,
+    String name,
+    String college,
+    String department,
+    String session,
+    String type,
+    ) async {
+    await setImage(uid);
+    return await usersCollection.doc(uid).set(
+      {
+        'username': username,
+        'name': name,
+        'college': college,
+        'department': department,
+        'session': session,
+        'type': type,
+        'isCompleted': false,
+        'gender': "",
+        'age': "",
+        'token': "",
+        'dateCreated': FieldValue.serverTimestamp(),
+      },
+    );
+  }
 
+  // Get student accounts
+  Stream<List<UserData>> getAccounts(String type) {
+    return usersCollection
+        .where('type', isEqualTo: type)
+        .orderBy('dateCreated', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => UserData.fromJson(doc)).toList(),
+        );
+  }
+
+  // Get image
+  Future<String?> getImage(String uid) async {
+    try {
+      final url = await filesCollection.child(uid).getDownloadURL();
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
 }
 
 

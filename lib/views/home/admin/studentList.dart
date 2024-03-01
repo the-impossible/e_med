@@ -1,6 +1,7 @@
 import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/controller/createAccountController.dart';
 import 'package:e_med/models/user_data.dart';
+import 'package:e_med/routes/routes.dart';
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/utils/title_case.dart';
@@ -35,6 +36,21 @@ class _StudentListState extends State<StudentList> {
             color: Constants.darkColor,
             fontName: "InterBold",
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.createStudent);
+                },
+                icon: const Icon(
+                  Icons.add_circle,
+                  size: 35,
+                  color: Constants.primaryColor,
+                ),
+              ),
+            )
+          ],
           elevation: 0,
           backgroundColor: Constants.basicColor,
         ),
@@ -49,7 +65,7 @@ class _StudentListState extends State<StudentList> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: size.height * .55,
+                    height: size.height * .7,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -79,8 +95,8 @@ class _StudentListState extends State<StudentList> {
                                             BoxShadow(
                                               color: Color.fromARGB(
                                                   221, 207, 203, 203),
-                                              blurRadius: 1,
-                                              offset: Offset(1, 3),
+                                              blurRadius: 2,
+                                              offset: Offset(2, 2),
                                             ),
                                           ],
                                           borderRadius:
@@ -103,7 +119,7 @@ class _StudentListState extends State<StudentList> {
                                                     fontSize: 18,
                                                     truncate: true,
                                                     fontName: "InterBold",
-                                                    color: Constants.basicColor,
+                                                    color: Constants.darkColor,
                                                   ),
                                                   const Spacer(),
                                                   FutureBuilder<String?>(

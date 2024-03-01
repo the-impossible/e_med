@@ -19,13 +19,13 @@ class NotificationApi {
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
       styleInformation: bigTextStyleInformation,
-      'eventify',
-      'Eventify.pro',
+      'Med Pro',
+      'Med.pro',
       importance: Importance.max,
       priority: Priority.max,
-      icon: "no_text",
+      icon: "logo",
       channelShowBadge: true,
-      largeIcon: const DrawableResourceAndroidBitmap("no_text"),
+      largeIcon: const DrawableResourceAndroidBitmap("logo"),
     );
 
     NotificationDetails notificationDetails = NotificationDetails(

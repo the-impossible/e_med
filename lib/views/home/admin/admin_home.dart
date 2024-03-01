@@ -1,6 +1,7 @@
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/views/home/admin/create_student.dart';
+import 'package:e_med/views/home/admin/schedule_student.dart';
 import 'package:e_med/views/home/admin/studentList.dart';
 import 'package:e_med/views/home/profile.dart';
 import 'package:e_med/views/home/student/schedule_list.dart';
@@ -19,7 +20,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey bottomNavigationKey = GlobalKey();
   DatabaseService databaseService = Get.put(DatabaseService());
-  int currentPage = 0;
+  int currentPage = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           index: currentPage,
           children: const [
             StudentList(),
-            CreateStudent(),
+            ScheduleStudent(),
             ScheduleList(),
             ProfilePage(),
           ],
@@ -48,16 +49,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
               title: "Students",
             ),
             TabData(
-              iconData: Icons.add_box_sharp,
-              title: "Create",
+              iconData: Icons.schedule_send,
+              title: "Schedule",
             ),
             TabData(
               iconData: Icons.how_to_vote_rounded,
-              title: "Schedule",
+              title: "Upload",
             ),
             TabData(iconData: Icons.person, title: "Profile")
           ],
-          initialSelection: 0,
+          initialSelection: 1,
           key: bottomNavigationKey,
           onTabChangedListener: (position) {
             setState(() {

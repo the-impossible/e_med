@@ -6,6 +6,7 @@ import 'package:e_med/controller/createAccountController.dart';
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/utils/form_validators.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
@@ -23,6 +24,7 @@ class CreateStudent extends StatefulWidget {
 class _CreateStudentState extends State<CreateStudent> {
   CreateAccountController createAccountController =
       Get.put(CreateAccountController());
+  final _formKey = GlobalKey<FormState>();
 
   DatabaseService databaseService = Get.put(DatabaseService());
 
@@ -108,88 +110,111 @@ class _CreateStudentState extends State<CreateStudent> {
           centerTitle: true,
           title: DelegatedText(
             text: "Create Student",
-            fontSize: 20,
+            fontSize: 18,
             color: Constants.darkColor,
             fontName: "InterBold",
+          ),
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Constants.darkColor,
+            ),
           ),
           elevation: 0,
           backgroundColor: Constants.basicColor,
         ),
         backgroundColor: Constants.basicColor,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Row(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: SizedBox(
-                          width: size.width * .4,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _pickCSV();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Constants.primaryColor,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                        child: SvgPicture.asset(
+                          'assets/create.svg',
+                          width: 50,
+                          height: 130,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: size.width * .4,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _pickCSV();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constants.primaryColor,
+                                ),
+                                child: DelegatedText(
+                                  fontSize: 15,
+                                  text: 'Select File',
+                                  color: Constants.whiteColor,
+                                ),
+                              ),
                             ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
                             child: DelegatedText(
+                              text: selected,
                               fontSize: 15,
-                              text: 'Select File',
-                              color: Constants.whiteColor,
+                              fontName: "InterBold",
+                              color: Constants.darkColor,
                             ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      const Session(),
+                      const SizedBox(height: 20),
+                      const College(),
+                      const SizedBox(height: 20),
+                      const Department(),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: size.width,
+                        height: 60,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              (isDisabled)
+                                  ? ScaffoldMessenger.of(Get.context!)
+                                      .showSnackBar(delegatedSnackBar(
+                                          "Select upload file", false))
+                                  : uploadFile();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Constants.primaryColor,
+                          ),
+                          child: DelegatedText(
+                            fontSize: 15,
+                            text: 'Create Students',
+                            color: Constants.basicColor,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: DelegatedText(
-                          text: selected,
-                          fontSize: 15,
-                          fontName: "InterBold",
-                          color: Constants.darkColor,
-                        ),
-                      ),
+                      // const Department(),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  const Session(),
-                  const SizedBox(height: 20),
-                  const College(),
-                  const SizedBox(height: 20),
-                  const Department(),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: size.width,
-                    height: 60,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        (isDisabled)
-                            ? ScaffoldMessenger.of(Get.context!).showSnackBar(
-                                delegatedSnackBar("Select upload file", false))
-                            : uploadFile();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Constants.primaryColor,
-                      ),
-                      child: DelegatedText(
-                        fontSize: 15,
-                        text: 'Create Students',
-                        color: Constants.basicColor,
-                      ),
-                    ),
-                  ),
-                  // const Department(),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

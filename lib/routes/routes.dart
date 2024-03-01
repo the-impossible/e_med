@@ -1,5 +1,7 @@
 import 'package:e_med/splashScreen.dart';
 import 'package:e_med/views/home/admin/admin_home.dart';
+import 'package:e_med/views/home/admin/create_student.dart';
+import 'package:e_med/views/home/admin/schedule_student.dart';
 import 'package:e_med/views/home/student/home.dart';
 import 'package:e_med/views/home/student/reset_password.dart';
 import 'package:get/get.dart';
@@ -9,8 +11,8 @@ class Routes {
   static String signIn = '/signIn';
   static String signUp = '/signUp';
   static String studHome = '/studHome';
-  static String castVote = '/castVote';
-  static String resultStats = '/resultStats';
+  static String createStudent = '/createStudent';
+  static String scheduleStudent = '/scheduleStudent';
   static String profilePage = '/profilePage';
   static String resetPassword = '/resetPassword';
   static String allCandidate = '/allCandidate';
@@ -30,14 +32,14 @@ final getPages = [
     name: Routes.studHome,
     page: () => const HomePage(0),
   ),
-  // GetPage(
-  //   name: Routes.castVote,
-  //   page: () => const CastVote(),
-  // ),
-  // GetPage(
-  //   name: Routes.resultStats,
-  //   page: () => const ResultStats(),
-  // ),
+  GetPage(
+    name: Routes.scheduleStudent,
+    page: () => const ScheduleStudent(),
+  ),
+  GetPage(
+    name: Routes.createStudent,
+    page: () => const CreateStudent(),
+  ),
   // GetPage(
   //   name: Routes.profilePage,
   //   page: () => const ProfilePage(),

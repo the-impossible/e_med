@@ -46,7 +46,7 @@ class HelperNotification {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("..............onMessage.............");
       notificationApi.showNotification(message.notification!.title,
-          message.notification!.body, message.data['event_id']);
+          message.notification!.body, message.data['scheduleId']);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {});

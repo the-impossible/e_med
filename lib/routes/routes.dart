@@ -4,6 +4,7 @@ import 'package:e_med/views/home/admin/create_student.dart';
 import 'package:e_med/views/home/admin/schedule_student.dart';
 import 'package:e_med/views/home/student/home.dart';
 import 'package:e_med/views/home/student/reset_password.dart';
+import 'package:e_med/views/home/admin/search_student.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -11,14 +12,14 @@ class Routes {
   static String signIn = '/signIn';
   static String signUp = '/signUp';
   static String studHome = '/studHome';
-  static String createStudent = '/createStudent';
-  static String scheduleStudent = '/scheduleStudent';
   static String profilePage = '/profilePage';
   static String resetPassword = '/resetPassword';
-  static String allCandidate = '/allCandidate';
 
   // Admin Pages
   static String adminHome = '/adminHome';
+  static String createStudent = '/createStudent';
+  static String scheduleStudent = '/scheduleStudent';
+  static String scheduleList = '/scheduleList';
 }
 
 bool isLogin = true;
@@ -40,10 +41,10 @@ final getPages = [
     name: Routes.createStudent,
     page: () => const CreateStudent(),
   ),
-  // GetPage(
-  //   name: Routes.profilePage,
-  //   page: () => const ProfilePage(),
-  // ),
+  GetPage(
+    name: Routes.scheduleList,
+    page: () => const ScheduleList(),
+  ),
   GetPage(
     name: Routes.resetPassword,
     page: () => const ResetPassword(),

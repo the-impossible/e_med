@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_med/models/scheduled_list.dart';
 import 'package:e_med/models/user_data.dart';
+import 'package:e_med/views/home/admin/search_student.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -136,7 +138,6 @@ class DatabaseService extends GetxController {
   }
 
   // Schedule Student
-
   Future<bool> scheduleStudent(
     String college,
     String session,
@@ -162,10 +163,8 @@ class DatabaseService extends GetxController {
           .where('session', isEqualTo: session)
           .where('type', isEqualTo: "std")
           .orderBy('dateCreated', descending: false)
-          // .limit(int.parse(amount))
           .get();
 
-      print("OBJECT: ${userSnapshot.docs.length}");
       if (userSnapshot.docs.isEmpty) {
         ScaffoldMessenger.of(Get.context!).showSnackBar(delegatedSnackBar(
             "No student found with the supplied data", false));
@@ -236,6 +235,73 @@ class DatabaseService extends GetxController {
     } catch (error) {
       print('Error scheduling student: $error');
       return false; // Return false if scheduling encounters an error
+    }
+  }
+
+  Future<List<ScheduledListModel>?> getScheduledList() async {
+
+    try {
+      List<ScheduledListModel> scheduleList = [];
+
+      // 1. Get all records from scheduleCollection
+      QuerySnapshot scheduleSnapshot = await scheduleCollection.get();
+
+      // 2. Create a map to store the most recent schedule for each user
+      Map<String, Map<String, dynamic>> userMap = {};
+
+      // Iterate through each document in the scheduleCollection
+      for (var scheduleDoc in scheduleSnapshot.docs) {
+        String userId = scheduleDoc['user'];
+
+        // If user already exists in the map, compare dateCreated and pick the most recent one
+        if (userMap.containsKey(userId)) {
+          DateTime existingDate = userMap[userId]!['dateCreated'];
+          DateTime newDate = (scheduleDoc['dateCreated'] as Timestamp).toDate();
+
+          // Update if the new date is more recent
+          if (newDate.isAfter(existingDate)) {
+            userMap[userId] = {
+              'id': scheduleDoc.id,
+              'userId': scheduleDoc['user'],
+              'dateCreated': newDate,
+            };
+          }
+        } else {
+          // If user doesn't exist in the map, add the schedule
+          userMap[userId] = {
+            'id': scheduleDoc.id,
+            'userId': scheduleDoc['user'],
+            'dateCreated': (scheduleDoc['dateCreated'] as Timestamp).toDate(),
+          };
+        }
+      }
+
+      // 3. Query userCollection to get name and username for each user
+      await Future.forEach(userMap.entries, (entry) async {
+        Map<String, dynamic> userData = entry.value;
+
+        DocumentSnapshot userDoc =
+            await usersCollection.doc(userData['userId']).get();
+
+        // Check if the user exists in userCollection
+        if (userDoc.exists) {
+          String name = userDoc['name'];
+          String username = userDoc['username'];
+
+          // Create a ScheduleList object and add it to the scheduleList
+          scheduleList.add(ScheduledListModel(
+            id: userData['id'],
+            name: name,
+            username: username,
+            dateCreated: userData['dateCreated'],
+          ));
+        }
+      });
+
+      return scheduleList;
+    } catch (error) {
+      print('Error getting scheduled list: $error');
+      return null; // Return null if an error occurs
     }
   }
 }

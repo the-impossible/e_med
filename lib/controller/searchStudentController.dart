@@ -1,18 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_med/components/delegatedSnackBar.dart';
+import 'package:e_med/models/scheduled_list.dart';
 import 'package:e_med/routes/routes.dart';
 import 'package:e_med/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ScheduleController extends GetxController {
+class SearchStudentController extends GetxController {
   DatabaseService databaseService = Get.put(DatabaseService());
 
+  @override
+  void onInit() {
+    super.onInit();
+    getSchedules();
+  }
+
   String? testDate;
-  TextEditingController collegeController = TextEditingController();
+
+  List<ScheduledListModel>? scheduledList;
+
+  TextEditingController usernameController = TextEditingController();
   TextEditingController sessionController = TextEditingController();
   TextEditingController testDateController = TextEditingController();
+
+  Future getSchedules() async {
+    scheduledList = await DatabaseService().getScheduledList();
+    print("LIST: $scheduledList");
+  }
 
   // Function to parse date string and convert to server timestamp
   Timestamp convertToServerTimestamp(String dateString) {
@@ -39,25 +54,24 @@ class ScheduleController extends GetxController {
 
     Timestamp serverTimestamp = convertToServerTimestamp(testDate!);
 
-    bool isSuccessful = await DatabaseService().scheduleStudent(
-      collegeController.text,
-      sessionController.text,
-      testDateController.text,
-      serverTimestamp,
-    );
+    bool isSuccessful;
+    // bool isSuccessful = await DatabaseService().scheduleStudent(
+    //   sessionController.text,
+    //   testDateController.text,
+    //   serverTimestamp,
+    // );
 
-    if (isSuccessful) {
-      collegeController.clear();
-      sessionController.clear();
-      testDateController.clear();
+    // if (isSuccessful) {
+    //   sessionController.clear();
+    //   testDateController.clear();
 
-      navigator!.pop(Get.context!);
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-          delegatedSnackBar("Test Scheduled was successful!", true));
+    //   navigator!.pop(Get.context!);
+    //   ScaffoldMessenger.of(Get.context!).showSnackBar(
+    //       delegatedSnackBar("Test Scheduled was successful!", true));
 
-      Get.toNamed(Routes.scheduleList);
-    } else {
-      navigator!.pop(Get.context!);
-    }
+    //   Get.toNamed(Routes.scheduleList);
+    // } else {
+    //   navigator!.pop(Get.context!);
+    // }
   }
 }

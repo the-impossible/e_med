@@ -4,7 +4,7 @@ import 'package:e_med/views/home/admin/create_student.dart';
 import 'package:e_med/views/home/admin/schedule_student.dart';
 import 'package:e_med/views/home/admin/studentList.dart';
 import 'package:e_med/views/home/profile.dart';
-import 'package:e_med/views/home/student/schedule_list.dart';
+import 'package:e_med/views/home/admin/search_student.dart';
 import 'package:fancy_bottom_navigation_2/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +35,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
           children: const [
             StudentList(),
             ScheduleStudent(),
-            ScheduleList(),
             ProfilePage(),
           ],
         ),
@@ -51,10 +50,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
             TabData(
               iconData: Icons.schedule_send,
               title: "Schedule",
-            ),
-            TabData(
-              iconData: Icons.how_to_vote_rounded,
-              title: "Upload",
             ),
             TabData(iconData: Icons.person, title: "Profile")
           ],

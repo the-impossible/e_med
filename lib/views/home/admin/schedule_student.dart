@@ -2,6 +2,7 @@ import 'package:e_med/components/delegatedForm2.dart';
 import 'package:e_med/components/delegatedSnackBar.dart';
 import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/controller/scheduleController.dart';
+import 'package:e_med/routes/routes.dart';
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/utils/form_validators.dart';
@@ -62,6 +63,21 @@ class _ScheduleStudentState extends State<ScheduleStudent> {
             color: Constants.darkColor,
             fontName: "InterBold",
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.scheduleList);
+                },
+                icon: const Icon(
+                  Icons.how_to_vote_rounded,
+                  size: 35,
+                  color: Constants.primaryColor,
+                ),
+              ),
+            )
+          ],
           elevation: 0,
           backgroundColor: Constants.basicColor,
         ),

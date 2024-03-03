@@ -85,91 +85,98 @@ class _StudentListState extends State<StudentList> {
                                     itemCount: accountList.length,
                                     itemBuilder: (context, index) {
                                       final accountData = accountList[index];
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 10),
-                                        height: size.height * .13,
-                                        decoration: BoxDecoration(
-                                          color: Constants.basicColor,
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color.fromARGB(
-                                                  221, 207, 203, 203),
-                                              blurRadius: 2,
-                                              offset: Offset(2, 2),
-                                            ),
-                                          ],
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  DelegatedText(
-                                                    text: accountData.name
-                                                        .titleCase(),
-                                                    fontSize: 18,
-                                                    truncate: true,
-                                                    fontName: "InterBold",
-                                                    color: Constants.darkColor,
-                                                  ),
-                                                  const Spacer(),
-                                                  FutureBuilder<String?>(
-                                                    future: databaseService
-                                                        .getImage(
-                                                            accountData.id),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (snapshot
-                                                              .connectionState ==
-                                                          ConnectionState
-                                                              .waiting) {
-                                                        return const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        );
-                                                      } else if (snapshot
-                                                          .hasData) {
-                                                        return ClipOval(
-                                                          child: Image.network(
-                                                            snapshot.data!,
-                                                            height: 50,
-                                                            width: 50,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        return Image.asset(
-                                                          "assets/user.png",
-                                                          width: 50,
-                                                          height: 40,
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
-                                                ],
+                                      return InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.studentDetails),
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          height: size.height * .13,
+                                          decoration: BoxDecoration(
+                                            color: Constants.basicColor,
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Color.fromARGB(
+                                                    221, 207, 203, 203),
+                                                blurRadius: 2,
+                                                offset: Offset(2, 2),
                                               ),
-                                              Row(
-                                                children: [
-                                                  DelegatedText(
-                                                    text: accountData.username
-                                                        .toUpperCase(),
-                                                    fontSize: 18,
-                                                    truncate: true,
-                                                    fontName: "InterBold",
-                                                    color: Constants.darkColor,
-                                                  )
-                                                ],
-                                              )
                                             ],
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    DelegatedText(
+                                                      text: accountData.name
+                                                          .titleCase(),
+                                                      fontSize: 18,
+                                                      truncate: true,
+                                                      fontName: "InterBold",
+                                                      color:
+                                                          Constants.darkColor,
+                                                    ),
+                                                    const Spacer(),
+                                                    FutureBuilder<String?>(
+                                                      future: databaseService
+                                                          .getImage(
+                                                              accountData.id),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return const Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          );
+                                                        } else if (snapshot
+                                                            .hasData) {
+                                                          return ClipOval(
+                                                            child:
+                                                                Image.network(
+                                                              snapshot.data!,
+                                                              height: 50,
+                                                              width: 50,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return Image.asset(
+                                                            "assets/user.png",
+                                                            width: 50,
+                                                            height: 40,
+                                                          );
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    DelegatedText(
+                                                      text: accountData.username
+                                                          .toUpperCase(),
+                                                      fontSize: 18,
+                                                      truncate: true,
+                                                      fontName: "InterBold",
+                                                      color:
+                                                          Constants.darkColor,
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       );

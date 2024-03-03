@@ -320,10 +320,23 @@ List<String> gender = [
 
 class _SelectGenderState extends State<SelectGender> {
   ProfileController profileController = Get.put(ProfileController());
+  String? location;
+
+  void initializeSelectedGender() {
+    if (profileController.genderController.text.isNotEmpty) {
+      location = profileController.genderController.text;
+    }
+  }
+
+  @override
+  void initState() {
+    initializeSelectedGender();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    String? location = profileController.genderController.text;
+    // String? location = profileController.genderController.text;
 
     return DropdownButtonFormField<String>(
       validator: FormValidator.validateGender,

@@ -1,8 +1,7 @@
-import 'package:e_med/controller/searchStudentController.dart';
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/views/home/profile.dart';
-import 'package:e_med/views/home/admin/search_student.dart';
+import 'package:e_med/views/home/student/schedule_list.dart';
 import 'package:fancy_bottom_navigation_2/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,7 +38,7 @@ class _HomePageState extends State<HomePage> {
         body: IndexedStack(
           index: currentPage,
           children: const [
-            ScheduleList(),
+            StudentScheduleList(),
             ProfilePage(),
           ],
         ),

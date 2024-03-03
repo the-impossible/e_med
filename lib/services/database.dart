@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_med/models/scheduled_list.dart';
+import 'package:e_med/models/student_schedule_list.dart';
 import 'package:e_med/models/test_rest.dart';
 import 'package:e_med/models/user_data.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -377,6 +378,7 @@ class DatabaseService extends GetxController {
         );
       }
       await usersCollection.doc(userId).update({'isCompleted': true});
+      await scheduleCollection.doc(userId).update({'hasUploaded': true});
       return true; // Return true if the operation is successful
     } catch (error) {
       print('Error uploading test result: $error');
@@ -396,4 +398,38 @@ class DatabaseService extends GetxController {
     }
     return null;
   }
+
+  // get student specific schedule
+  // Stream<List<StudentScheduleListModel>>? getListOfSchedule(String user) {
+  //   return scheduleCollection
+  //       .where('user', isEqualTo: user)
+  //       .orderBy('dateCreated', descending: true)
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.docs
+  //           .map((doc) => StudentScheduleListModel.fromJson(doc))
+  //           .toList());
+  // }
+
+  Stream<List<StudentScheduleListModel>> getListOfSchedule(String user) {
+  return scheduleCollection
+      .where('user', isEqualTo: user)
+      .orderBy('dateCreated', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs.map((doc) {
+        var schedule = StudentScheduleListModel.fromJson(doc); // Pass the DocumentSnapshot directly
+
+        // Update the hasExpired field based on the testDate
+        if (schedule.testDate != null && schedule.testDate!.isBefore(DateTime.now())) {
+          schedule.hasExpired = true;
+        } else {
+          schedule.hasExpired = false;
+        }
+
+        // Update the document in Firestore with the modified schedule
+        scheduleCollection.doc(doc.id).update({'hasExpired': schedule.hasExpired});
+
+        return schedule;
+      }).toList());
+}
+
 }

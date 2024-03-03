@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_med/models/scheduled_list.dart';
+import 'package:e_med/models/test_rest.dart';
 import 'package:e_med/models/user_data.dart';
-import 'package:e_med/views/home/admin/search_student.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +22,7 @@ class DatabaseService extends GetxController {
   var usersCollection = FirebaseFirestore.instance.collection("Users");
   var scheduleCollection = FirebaseFirestore.instance.collection("Schedule");
   var amountCollection = FirebaseFirestore.instance.collection("Amount");
+  var testCollection = FirebaseFirestore.instance.collection("Test");
   var filesCollection = FirebaseStorage.instance.ref();
 
   //get user and populate the userData model
@@ -239,7 +240,6 @@ class DatabaseService extends GetxController {
   }
 
   Future<List<ScheduledListModel>?> getScheduledList() async {
-
     try {
       List<ScheduledListModel> scheduleList = [];
 
@@ -290,7 +290,7 @@ class DatabaseService extends GetxController {
 
           // Create a ScheduleList object and add it to the scheduleList
           scheduleList.add(ScheduledListModel(
-            id: userData['id'],
+            id: userData['userId'],
             name: name,
             username: username,
             dateCreated: userData['dateCreated'],
@@ -303,5 +303,97 @@ class DatabaseService extends GetxController {
       print('Error getting scheduled list: $error');
       return null; // Return null if an error occurs
     }
+  }
+
+  //Upload Result
+  Future uploadStudentTestResult(
+    String userId,
+    String hb,
+    String reaction,
+    String mp,
+    String protein,
+    String diff,
+    String sugar,
+    String skin,
+    String bil,
+    String sickling,
+    String ace,
+    String genotype,
+    String gravity,
+    String grouping,
+    String pregnancy,
+    String sag,
+    String micro,
+  ) async {
+    try {
+      // Check if the document exists
+      final docSnapshot = await testCollection.doc(userId).get();
+      if (docSnapshot.exists) {
+        // Document exists, update it
+        await testCollection.doc(userId).update(
+          {
+            'hb': hb,
+            'reaction': reaction,
+            'mp': mp,
+            'protein': protein,
+            'diff': diff,
+            'sugar': sugar,
+            'skin': skin,
+            'bil': bil,
+            'sickling': sickling,
+            'ace': ace,
+            'genotype': genotype,
+            'gravity': gravity,
+            'grouping': grouping,
+            'pregnancy': pregnancy,
+            'sag': sag,
+            'micro': micro,
+            'dateUpdated': FieldValue.serverTimestamp(),
+          },
+        );
+      } else {
+        // Document does not exist, create it
+        await testCollection.doc(userId).set(
+          {
+            'userId': userId,
+            'hb': hb,
+            'reaction': reaction,
+            'mp': mp,
+            'protein': protein,
+            'diff': diff,
+            'sugar': sugar,
+            'skin': skin,
+            'bil': bil,
+            'sickling': sickling,
+            'ace': ace,
+            'genotype': genotype,
+            'gravity': gravity,
+            'grouping': grouping,
+            'pregnancy': pregnancy,
+            'sag': sag,
+            'micro': micro,
+            'dateCreated': FieldValue.serverTimestamp(),
+          },
+        );
+      }
+      await usersCollection.doc(userId).update({'isCompleted': true});
+      return true; // Return true if the operation is successful
+    } catch (error) {
+      print('Error uploading test result: $error');
+      ScaffoldMessenger.of(Get.context!)
+          .showSnackBar(delegatedSnackBar("$error", true));
+      return false; // Return false if an error occurs
+    }
+  }
+
+  //get Test Result
+  Future<TestResult?> getTestResult(String uid) async {
+    // Query database to get user type
+    final snapshot = await testCollection.doc(uid).get();
+    // Return user type as string
+    if (snapshot.exists) {
+      return TestResult.fromJson(snapshot);
+    }
+    return null;
   }
 }

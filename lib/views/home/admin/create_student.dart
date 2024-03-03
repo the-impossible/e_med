@@ -208,7 +208,6 @@ class _CreateStudentState extends State<CreateStudent> {
                           ),
                         ),
                       ),
-                      // const Department(),
                     ],
                   ),
                 ),

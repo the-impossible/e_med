@@ -5,6 +5,7 @@ import 'package:e_med/controller/resetPasswordController.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/utils/form_validators.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -48,6 +49,14 @@ class _ResetPasswordState extends State<ResetPassword> {
               key: _formKey,
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                    child: SvgPicture.asset(
+                      'assets/password.svg',
+                      width: 50,
+                      height: 130,
+                    ),
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 10),

@@ -157,6 +157,18 @@ class _StudentListState extends State<StudentList> {
                                                   ),
                                                 ],
                                               ),
+                                              Row(
+                                                children: [
+                                                  DelegatedText(
+                                                    text: accountData.username
+                                                        .toUpperCase(),
+                                                    fontSize: 18,
+                                                    truncate: true,
+                                                    fontName: "InterBold",
+                                                    color: Constants.darkColor,
+                                                  )
+                                                ],
+                                              )
                                             ],
                                           ),
                                         ),

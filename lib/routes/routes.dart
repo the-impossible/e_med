@@ -2,6 +2,7 @@ import 'package:e_med/splashScreen.dart';
 import 'package:e_med/views/home/admin/admin_home.dart';
 import 'package:e_med/views/home/admin/create_student.dart';
 import 'package:e_med/views/home/admin/schedule_student.dart';
+import 'package:e_med/views/home/admin/upload_test.dart';
 import 'package:e_med/views/home/student/home.dart';
 import 'package:e_med/views/home/student/reset_password.dart';
 import 'package:e_med/views/home/admin/search_student.dart';
@@ -20,6 +21,7 @@ class Routes {
   static String createStudent = '/createStudent';
   static String scheduleStudent = '/scheduleStudent';
   static String scheduleList = '/scheduleList';
+  static String uploadTestResult = '/uploadTestResult';
 }
 
 bool isLogin = true;
@@ -53,8 +55,8 @@ final getPages = [
     name: Routes.adminHome,
     page: () => const AdminHomePage(),
   ),
-  // GetPage(
-  //   name: Routes.allCandidate,
-  //   page: () => const AllCandidate(),
-  // ),
+  GetPage(
+    name: Routes.uploadTestResult,
+    page: () => const UploadTestResult(),
+  ),
 ];

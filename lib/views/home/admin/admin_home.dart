@@ -20,7 +20,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey bottomNavigationKey = GlobalKey();
   DatabaseService databaseService = Get.put(DatabaseService());
-  int currentPage = 1;
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             ),
             TabData(iconData: Icons.person, title: "Profile")
           ],
-          initialSelection: 1,
+          initialSelection: 0,
           key: bottomNavigationKey,
           onTabChangedListener: (position) {
             setState(() {

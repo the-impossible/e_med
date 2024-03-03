@@ -1,6 +1,7 @@
 import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/controller/searchStudentController.dart';
 import 'package:e_med/models/scheduled_list.dart';
+import 'package:e_med/routes/routes.dart';
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +130,16 @@ class _ScheduleListState extends State<ScheduleList> {
                                     return Column(
                                       children: [
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () => Get.toNamed(
+                                              Routes.uploadTestResult,
+                                              arguments: {
+                                                'username': scheduleData
+                                                    .username
+                                                    .toUpperCase(),
+                                                'name': scheduleData.name
+                                                    .toUpperCase(),
+                                                'userId': scheduleData.id,
+                                              }),
                                           child: Container(
                                             height: size.height * 0.15,
                                             margin: const EdgeInsets.only(

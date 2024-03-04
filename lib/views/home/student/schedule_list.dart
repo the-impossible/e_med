@@ -1,13 +1,20 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/models/scheduled_list.dart';
 import 'package:e_med/models/student_schedule_list.dart';
 import 'package:e_med/services/database.dart';
+import 'package:e_med/services/pdf_generator.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 
 class StudentScheduleList extends StatefulWidget {
   const StudentScheduleList({super.key});
@@ -18,6 +25,7 @@ class StudentScheduleList extends StatefulWidget {
 
 class _StudentScheduleListState extends State<StudentScheduleList> {
   DatabaseService databaseService = Get.put(DatabaseService());
+  final PdfGenerator pdfGenerator = PdfGenerator();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -151,7 +159,13 @@ class _StudentScheduleListState extends State<StudentScheduleList> {
                                                 width: 100,
                                                 height: 50,
                                                 child: ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () async {
+                                                    final data =
+                                                        await pdfGenerator
+                                                            .generatePDF();
+                                                    pdfGenerator.savePdfFile(
+                                                        "MedPro", data);
+                                                  },
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     backgroundColor:

@@ -4,6 +4,7 @@ import 'package:e_med/components/delegatedForm.dart';
 import 'package:e_med/components/delegatedSnackBar.dart';
 import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/components/error.dart';
+import 'package:e_med/controller/logoutController.dart';
 import 'package:e_med/controller/profileController.dart';
 import 'package:e_med/models/user_data.dart';
 import 'package:e_med/routes/routes.dart';
@@ -28,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
   DatabaseService databaseService = Get.put(DatabaseService());
   ProfileController profileController = Get.put(ProfileController());
+  LogoutController logoutController = Get.put(LogoutController());
   Future pickImage() async {
     try {
       final pickedFile =
@@ -274,7 +276,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
-                                                // logoutController.signOut();
+                                                logoutController.signOut();
                                               },
                                               child: const Text('Log out'),
                                             ),

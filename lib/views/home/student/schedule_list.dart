@@ -155,28 +155,79 @@ class _StudentScheduleListState extends State<StudentScheduleList> {
                                         ),
                                         const SizedBox(height: 10),
                                         (scheduleData.hasUploaded)
-                                            ? SizedBox(
-                                                width: 100,
-                                                height: 50,
-                                                child: ElevatedButton(
-                                                  onPressed: () async {
-                                                    final data =
-                                                        await pdfGenerator
-                                                            .generatePDF();
-                                                    pdfGenerator.savePdfFile(
-                                                        "MedPro", data);
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Constants.primaryColor,
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                    DelegatedText(
+                                                      text: "Completed",
+                                                      fontSize: 15,
+                                                      color: Constants
+                                                          .primaryColor,
+                                                      truncate: false,
+                                                      fontName: "InterBold",
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      height: 50,
+                                                      child: ElevatedButton(
+                                                        onPressed: () async {
+                                                          final data =
+                                                              await pdfGenerator
+                                                                  .generatePDF(
+                                                                      scheduleData
+                                                                          .user);
+                                                          pdfGenerator
+                                                              .savePdfFile(
+                                                                  "MedPro",
+                                                                  data);
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              Constants
+                                                                  .primaryColor,
+                                                        ),
+                                                        child: DelegatedText(
+                                                            text: "Result",
+                                                            fontSize: 15),
+                                                      ),
+                                                    )
+                                                  ])
+                                            : (scheduleData.hasExpired)
+                                                ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      DelegatedText(
+                                                        text: "Expired",
+                                                        fontSize: 15,
+                                                        color: Constants
+                                                            .secondaryColor,
+                                                        truncate: false,
+                                                        fontName: "InterBold",
+                                                      ),
+                                                      const Spacer(),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      DelegatedText(
+                                                        text: "On-going",
+                                                        fontSize: 15,
+                                                        color: Constants
+                                                            .primaryColor,
+                                                        truncate: false,
+                                                        fontName: "InterBold",
+                                                      ),
+                                                      const Spacer(),
+                                                    ],
                                                   ),
-                                                  child: DelegatedText(
-                                                      text: "Result",
-                                                      fontSize: 15),
-                                                ),
-                                              )
-                                            : const SizedBox()
                                       ],
                                     ),
                                   ),

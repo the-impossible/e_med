@@ -1,13 +1,26 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:e_med/models/test_rest.dart';
+import 'package:e_med/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 
 class PdfGenerator {
-  Future<Uint8List> generatePDF() {
+  Future<Uint8List> generatePDF(String userId) async {
+    DatabaseService databaseService = Get.put(DatabaseService());
+
+    TestResult? testResult = await databaseService.getTestResult(userId);
+
+    final DateFormat formatter = DateFormat('MMMM d, yyyy, h:mm a');
+
+    // Get the current date and time
+    final String formattedDate = formatter.format(DateTime.now());
+
     final pdf = pw.Document();
 
     List<pw.Widget> widgets = [];
@@ -92,7 +105,7 @@ class PdfGenerator {
                 fontWeight: pw.FontWeight.bold,
               ),
             ),
-            pw.SizedBox(width: 4.0), // Add some spacing between label and text
+            pw.SizedBox(width: 10), // Add some spacing between label and text
             pw.Container(
               decoration: const pw.BoxDecoration(
                 border: pw.Border(
@@ -214,16 +227,19 @@ class PdfGenerator {
     final bioDataArea = pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        _buildUnderlinedText("NAME: ", "Faisol Ademola"),
-        _buildUnderlinedText("SEX: ", "Male"),
-        _buildUnderlinedText("AGE: ", "20"),
+        _buildUnderlinedText(
+            "NAME: ", databaseService.userData!.name.toUpperCase()),
+        _buildUnderlinedText(
+            "SEX: ", databaseService.userData!.gender!.toUpperCase()),
+        _buildUnderlinedText(
+            "AGE: ", databaseService.userData!.age!.toUpperCase()),
       ],
     );
 
     final schDataArea = pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        _buildSchData("DEPT: ", "Computer Science "),
+        _buildSchData("DEPT: ", databaseService.userData!.department!),
         _buildSchData("CLINIC NOTES : ", "MEDICAL EXAMINATION"),
       ],
     );
@@ -300,14 +316,21 @@ class PdfGenerator {
     final testDataArea = pw.Column(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        _resultData("HB G/100ML: ", "70.0", "REACTION: ", "4.6"),
-        _resultData("MP: ", "", "PROTEIN: ", "NIL"),
-        _resultData("DIFF.COUNT: ", "", "SUGAR(GLUCOSE): ", "NIL"),
-        _resultData("SKIN SNIP & BLOOD FILM: ", "", "BILIRUBIN: ", "NIL"),
-        _resultData("SICKLING: ", "Negative", "ACETONE: ", "NIL"),
-        _resultData("GENOTYPE/SOLUBILITY: ", "", "SPECIFIC GRAVITY: ", ""),
-        _resultData("GROUPING: ", "O +ve", "PREGNANCY: ", ""),
-        _resultData("HB SAG: ", "", "MICROSCOPY/C/S: ", ""),
+        _resultData(
+            "HB G/100ML: ", testResult!.hb, "REACTION: ", testResult.reaction!),
+        _resultData("MP: ", testResult.mp!, "PROTEIN: ", testResult.protein),
+        _resultData("DIFF.COUNT: ", testResult.diff!, "SUGAR(GLUCOSE): ",
+            testResult.sugar),
+        _resultData("SKIN SNIP & BLOOD FILM: ", testResult.skin!, "BILIRUBIN: ",
+            testResult.bil),
+        _resultData(
+            "SICKLING: ", testResult.skin!, "ACETONE: ", testResult.ace),
+        _resultData("GENOTYPE/SOLUBILITY: ", testResult.genotype!,
+            "SPECIFIC GRAVITY: ", testResult.gravity!),
+        _resultData("GROUPING: ", testResult.grouping, "PREGNANCY: ",
+            testResult.pregnancy!),
+        _resultData(
+            "HB SAG: ", testResult.sag!, "MICROSCOPY/C/S: ", testResult.micro!),
         _resultData("HCV: ", "", "", ""),
         _resultData("FBS: ", "", "", ""),
       ],
@@ -317,7 +340,7 @@ class PdfGenerator {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         _buildLabData1("MED.LAB SCIENTIST SIGNATURE", ""),
-        _buildLabData1("DATE : ", "March 4, 2024, 2:49 p.m"),
+        _buildLabData1("DATE : ", formattedDate),
       ],
     );
 
@@ -325,7 +348,7 @@ class PdfGenerator {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         _buildDocData("DOCTOR'S SIGNATURE", ""),
-        _buildDocData("DATE : ", "March 4, 2024, 2:49 p.m"),
+        _buildDocData("DATE : ", formattedDate),
       ],
     );
 

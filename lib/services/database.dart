@@ -399,37 +399,29 @@ class DatabaseService extends GetxController {
     return null;
   }
 
-  // get student specific schedule
-  // Stream<List<StudentScheduleListModel>>? getListOfSchedule(String user) {
-  //   return scheduleCollection
-  //       .where('user', isEqualTo: user)
-  //       .orderBy('dateCreated', descending: true)
-  //       .snapshots()
-  //       .map((snapshot) => snapshot.docs
-  //           .map((doc) => StudentScheduleListModel.fromJson(doc))
-  //           .toList());
-  // }
-
   Stream<List<StudentScheduleListModel>> getListOfSchedule(String user) {
-  return scheduleCollection
-      .where('user', isEqualTo: user)
-      .orderBy('dateCreated', descending: true)
-      .snapshots()
-      .map((snapshot) => snapshot.docs.map((doc) {
-        var schedule = StudentScheduleListModel.fromJson(doc); // Pass the DocumentSnapshot directly
+    return scheduleCollection
+        .where('user', isEqualTo: user)
+        .orderBy('dateCreated', descending: false)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) {
+              var schedule = StudentScheduleListModel.fromJson(
+                  doc); // Pass the DocumentSnapshot directly
 
-        // Update the hasExpired field based on the testDate
-        if (schedule.testDate != null && schedule.testDate!.isBefore(DateTime.now())) {
-          schedule.hasExpired = true;
-        } else {
-          schedule.hasExpired = false;
-        }
+              // Update the hasExpired field based on the testDate
+              if (schedule.testDate != null &&
+                  schedule.testDate!.isBefore(DateTime.now())) {
+                schedule.hasExpired = true;
+              } else {
+                schedule.hasExpired = false;
+              }
 
-        // Update the document in Firestore with the modified schedule
-        scheduleCollection.doc(doc.id).update({'hasExpired': schedule.hasExpired});
+              // Update the document in Firestore with the modified schedule
+              scheduleCollection
+                  .doc(doc.id)
+                  .update({'hasExpired': schedule.hasExpired});
 
-        return schedule;
-      }).toList());
-}
-
+              return schedule;
+            }).toList());
+  }
 }

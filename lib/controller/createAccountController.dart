@@ -39,16 +39,14 @@ class CreateAccountController extends GetxController {
           );
 
           // Create a new user
-          await DatabaseService()
-              .createStudentData(
-                user.user!.uid,
-                username,
-                name,
-                collegeController.text,
-                departmentController.text,
-                sessionController.text,
-                "std"
-              );
+          await DatabaseService().createStudentData(
+              user.user!.uid,
+              username,
+              name,
+              collegeController.text,
+              departmentController.text,
+              sessionController.text,
+              "std");
 
           // after creating the account, delete the secondary app
           await secondaryApp.delete();
@@ -61,8 +59,9 @@ class CreateAccountController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       navigator!.pop(Get.context!);
-      ScaffoldMessenger.of(Get.context!)
-          .showSnackBar(delegatedSnackBar(e.message.toString(), false));
+      print("ERROR: $e");
+      ScaffoldMessenger.of(Get.context!).showSnackBar(delegatedSnackBar(
+          "Error creating, check your internet connection", false));
     } finally {
       navigator!.pop(Get.context!);
     }

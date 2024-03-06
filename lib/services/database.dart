@@ -378,12 +378,32 @@ class DatabaseService extends GetxController {
         );
       }
       await usersCollection.doc(userId).update({'isCompleted': true});
-      await scheduleCollection.doc(userId).update({'hasUploaded': true});
+
+      final QuerySnapshot querySnapshot = await scheduleCollection
+          .where('user', isEqualTo: userId)
+          .orderBy('dateCreated', descending: true)
+          .limit(1)
+          .get();
+
+      // Check if any documents were found
+      if (querySnapshot.docs.isNotEmpty) {
+        // Get the first document (most recent one)
+        final DocumentSnapshot document = querySnapshot.docs.first;
+        // Update the document
+        await document.reference.update({
+          'hasUploaded': true,
+        });
+      } else {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+            delegatedSnackBar("student schedule not found", false));
+        return false; // Return false if an error occurs
+      }
+
       return true; // Return true if the operation is successful
     } catch (error) {
       print('Error uploading test result: $error');
       ScaffoldMessenger.of(Get.context!)
-          .showSnackBar(delegatedSnackBar("$error", true));
+          .showSnackBar(delegatedSnackBar("$error", false));
       return false; // Return false if an error occurs
     }
   }
@@ -410,7 +430,8 @@ class DatabaseService extends GetxController {
 
               // Update the hasExpired field based on the testDate
               if (schedule.testDate != null &&
-                  schedule.testDate!.isBefore(DateTime.now())) {
+                  schedule.testDate!.isBefore(
+                      DateTime.now().toLocal().subtract(Duration(days: 1)))) {
                 schedule.hasExpired = true;
               } else {
                 schedule.hasExpired = false;

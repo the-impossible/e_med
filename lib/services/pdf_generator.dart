@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:e_med/components/delegatedSnackBar.dart';
 import 'package:e_med/models/test_rest.dart';
+import 'package:e_med/models/user_data.dart';
 import 'package:e_med/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -11,9 +14,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 
 class PdfGenerator {
+  DatabaseService databaseService = Get.put(DatabaseService());
   Future<Uint8List> generatePDF(String userId) async {
-    DatabaseService databaseService = Get.put(DatabaseService());
-
     TestResult? testResult = await databaseService.getTestResult(userId);
 
     final DateFormat formatter = DateFormat('MMMM d, yyyy, h:mm a');
@@ -224,15 +226,15 @@ class PdfGenerator {
       );
     }
 
+    UserData? userData =
+        await databaseService.getUser(FirebaseAuth.instance.currentUser!.uid);
+
     final bioDataArea = pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
-        _buildUnderlinedText(
-            "NAME: ", databaseService.userData!.name.toUpperCase()),
-        _buildUnderlinedText(
-            "SEX: ", databaseService.userData!.gender!.toUpperCase()),
-        _buildUnderlinedText(
-            "AGE: ", databaseService.userData!.age!.toUpperCase()),
+        _buildUnderlinedText("NAME: ", userData!.name.toUpperCase()),
+        _buildUnderlinedText("SEX: ", userData.gender!.toUpperCase()),
+        _buildUnderlinedText("AGE: ", userData.age!.toUpperCase()),
       ],
     );
 
@@ -380,6 +382,14 @@ class PdfGenerator {
     var filePath = "${output.path}/$fileName.pdf";
     final file = File(filePath);
     await file.writeAsBytes(byteList);
-    await OpenFile.open(filePath);
+    UserData? userData =
+        await databaseService.getUser(FirebaseAuth.instance.currentUser!.uid);
+
+    if (userData!.age!.isNotEmpty && userData.gender != null) {
+      await OpenFile.open(filePath);
+    } else {
+      ScaffoldMessenger.of(Get.context!)
+          .showSnackBar(delegatedSnackBar("Update your profile first", false));
+    }
   }
 }

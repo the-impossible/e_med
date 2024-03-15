@@ -55,6 +55,21 @@ class DatabaseService extends GetxController {
     return true;
   }
 
+  // Update student profile
+  Future<bool> updateStudentProfile(
+    String uid,
+    String name,
+    String age,
+    String gender,
+  ) async {
+    usersCollection.doc(uid).update({
+      "age": age,
+      "gender": gender,
+      "name": name,
+    });
+    return true;
+  }
+
   // update user profile image
   Future<bool> updateImage(File? image, String path) async {
     filesCollection.child(path).putFile(image!);
@@ -79,6 +94,19 @@ class DatabaseService extends GetxController {
       }
       return null;
     });
+  }
+
+  Future<UserData?> getStudentProfile(String uid) async {
+    try {
+      var snapshot = await usersCollection.doc(uid).get();
+      if (snapshot.exists) {
+        return UserData.fromJson(snapshot);
+      }
+      return null;
+    } catch (e) {
+      print("Error fetching user profile: $e");
+      return null;
+    }
   }
 
   // Set Image
@@ -118,9 +146,12 @@ class DatabaseService extends GetxController {
   }
 
   // Get student accounts
-  Stream<List<UserData>> getAccounts(String type) {
+  Stream<List<UserData>> getAccounts(
+      String type, String session, String college) {
     return usersCollection
         .where('type', isEqualTo: type)
+        .where('session', isEqualTo: session)
+        .where('college', isEqualTo: college)
         .orderBy('dateCreated', descending: true)
         .snapshots()
         .map(

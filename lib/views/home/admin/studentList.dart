@@ -36,6 +36,11 @@ class _StudentListState extends State<StudentList> {
             color: Constants.darkColor,
             fontName: "InterBold",
           ),
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(Icons.arrow_back),
+            color: Constants.darkColor,
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 20),
@@ -70,7 +75,10 @@ class _StudentListState extends State<StudentList> {
                       child: Column(
                         children: [
                           StreamBuilder<List<UserData>>(
-                            stream: databaseService.getAccounts('std'),
+                            stream: databaseService.getAccounts(
+                                'std',
+                                "${Get.arguments?['session'] ?? ''}",
+                                "${Get.arguments?['college'] ?? ''}"),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return Text(
@@ -85,9 +93,11 @@ class _StudentListState extends State<StudentList> {
                                     itemCount: accountList.length,
                                     itemBuilder: (context, index) {
                                       final accountData = accountList[index];
-                                      return InkWell(
+                                      return InkWell (
                                         onTap: () =>
-                                            Get.toNamed(Routes.studentDetails),
+                                            Get.toNamed(Routes.studentDetails, arguments:  {
+                                              'userID':accountData.id
+                                            }),
                                         child: Container(
                                           margin: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 10),

@@ -30,13 +30,20 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 50.0, bottom: 30),
+                    padding: const EdgeInsets.only(top: 50.0),
                     child: Image.asset(
                       "assets/logo.png",
                       width: 200,
                       height: 130,
                     ),
                   ),
+                  DelegatedText(
+                    text: 'MedTest',
+                    fontSize: 28,
+                    fontName: 'InterBold',
+                    color: Constants.primaryColor,
+                  ),
+                  const SizedBox(height: 20),
                   delegatedForm(
                     fieldName: 'Username',
                     icon: Icons.person,

@@ -1,6 +1,7 @@
 import 'package:e_med/services/database.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/views/home/admin/create_student.dart';
+import 'package:e_med/views/home/admin/get_student.dart';
 import 'package:e_med/views/home/admin/schedule_student.dart';
 import 'package:e_med/views/home/admin/studentList.dart';
 import 'package:e_med/views/home/profile.dart';
@@ -33,7 +34,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         body: IndexedStack(
           index: currentPage,
           children: const [
-            StudentList(),
+            GetStudent(),
             ScheduleStudent(),
             ProfilePage(),
           ],

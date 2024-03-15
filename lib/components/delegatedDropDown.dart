@@ -2,16 +2,19 @@ import 'package:e_med/components/delegatedText.dart';
 import 'package:e_med/utils/constant.dart';
 import 'package:e_med/utils/form_validators.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DropDown extends StatefulWidget {
   final List<String> dropDownName;
   final String name;
+  final String? initialValue;
   final IconData icon;
   final TextEditingController controller;
 
   const DropDown({
     required this.dropDownName,
     required this.name,
+    this.initialValue,
     required this.icon,
     required this.controller,
     super.key,
@@ -24,8 +27,10 @@ class DropDown extends StatefulWidget {
 class _DropDownState extends State<DropDown> {
   String? dropDownValue;
 
+
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Padding(

@@ -2,6 +2,7 @@ import 'package:e_med/splashScreen.dart';
 import 'package:e_med/views/home/admin/admin_home.dart';
 import 'package:e_med/views/home/admin/create_student.dart';
 import 'package:e_med/views/home/admin/schedule_student.dart';
+import 'package:e_med/views/home/admin/studentList.dart';
 import 'package:e_med/views/home/admin/student_details.dart';
 import 'package:e_med/views/home/admin/upload_test.dart';
 import 'package:e_med/views/home/student/home.dart';
@@ -21,6 +22,7 @@ class Routes {
   static String adminHome = '/adminHome';
   static String createStudent = '/createStudent';
   static String scheduleStudent = '/scheduleStudent';
+  static String studentList = '/studentList';
   static String scheduleList = '/scheduleList';
   static String uploadTestResult = '/uploadTestResult';
   static String studentDetails = '/studentDetails';
@@ -46,6 +48,10 @@ final getPages = [
     page: () => const CreateStudent(),
   ),
   GetPage(
+    name: Routes.studentList,
+    page: () => const StudentList(),
+  ),
+  GetPage(
     name: Routes.scheduleList,
     page: () => const ScheduleList(),
   ),
@@ -63,6 +69,6 @@ final getPages = [
   ),
   GetPage(
     name: Routes.studentDetails,
-    page: () => const StudentDetails(),
+    page: () => const StudentDetailsPage(),
   ),
 ];

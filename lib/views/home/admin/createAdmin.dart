@@ -20,7 +20,8 @@ class _CreateAdminState extends State<CreateAdmin> {
   File? image;
   final _formKey = GlobalKey<FormState>();
   DatabaseService databaseService = Get.put(DatabaseService());
-  CreateAdminAccountController createAdminAccountController = Get.put(CreateAdminAccountController());
+  CreateAdminAccountController createAdminAccountController =
+      Get.put(CreateAdminAccountController());
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,8 @@ class _CreateAdminState extends State<CreateAdmin> {
                           hintText: 'Enter Full name',
                           validator: FormValidator.validateName,
                           isSecured: false,
-                          formController: createAdminAccountController.nameController,
+                          formController:
+                              createAdminAccountController.nameController,
                         ),
                         delegatedForm(
                           fieldName: 'Username',
@@ -77,7 +79,8 @@ class _CreateAdminState extends State<CreateAdmin> {
                           hintText: 'Enter Username',
                           validator: FormValidator.validateAge,
                           isSecured: false,
-                          formController: createAdminAccountController.usernameController,
+                          formController:
+                              createAdminAccountController.usernameController,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 30.0),

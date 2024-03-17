@@ -235,8 +235,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 5, top: 10),
+                                  padding:
+                                      const EdgeInsets.only(bottom: 5, top: 10),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -257,28 +257,32 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      DelegatedText(
-                                        text: "Admin Account?",
-                                        fontSize: 15,
-                                        color: Constants.darkColor,
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Get.toNamed(Routes.createAdmin),
-                                        child: DelegatedText(
-                                          text: "Create Now",
-                                          fontSize: 15,
-                                          color: Constants.primaryColor,
+                                (databaseService.userData!.type == "adm")
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            DelegatedText(
+                                              text: "Admin Account?",
+                                              fontSize: 15,
+                                              color: Constants.darkColor,
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Get.toNamed(
+                                                  Routes.createAdmin),
+                                              child: DelegatedText(
+                                                text: "Create Now",
+                                                fontSize: 15,
+                                                color: Constants.primaryColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                      )
+                                    : const SizedBox(),
                                 TextButton(
                                   onPressed: () => {
                                     showDialog(

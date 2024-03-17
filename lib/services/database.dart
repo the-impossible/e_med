@@ -145,6 +145,31 @@ class DatabaseService extends GetxController {
     );
   }
 
+    //Create user
+  Future createAdminData(
+    String uid,
+    String username,
+    String name,
+    String type,
+  ) async {
+    await setImage(uid);
+    return await usersCollection.doc(uid).set(
+      {
+        'username': username,
+        'name': name,
+        'college': "",
+        'department': "",
+        'session': "",
+        'type': type,
+        'isCompleted': false,
+        'gender': "",
+        'age': "",
+        'token': "",
+        'dateCreated': FieldValue.serverTimestamp(),
+      },
+    );
+  }
+
   // Get student accounts
   Stream<List<UserData>> getAccounts(
       String type, String session, String college) {

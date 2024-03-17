@@ -1,5 +1,6 @@
 import 'package:e_med/splashScreen.dart';
 import 'package:e_med/views/home/admin/admin_home.dart';
+import 'package:e_med/views/home/admin/createAdmin.dart';
 import 'package:e_med/views/home/admin/create_student.dart';
 import 'package:e_med/views/home/admin/schedule_student.dart';
 import 'package:e_med/views/home/admin/studentList.dart';
@@ -26,6 +27,7 @@ class Routes {
   static String scheduleList = '/scheduleList';
   static String uploadTestResult = '/uploadTestResult';
   static String studentDetails = '/studentDetails';
+  static String createAdmin = '/createAdmin';
 }
 
 bool isLogin = true;
@@ -70,5 +72,9 @@ final getPages = [
   GetPage(
     name: Routes.studentDetails,
     page: () => const StudentDetailsPage(),
+  ),
+  GetPage(
+    name: Routes.createAdmin,
+    page: () => const CreateAdmin(),
   ),
 ];
